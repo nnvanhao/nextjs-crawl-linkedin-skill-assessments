@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { chromium as pw } from "playwright";
 import chromium from "chromium";
 
-export async function POST(req: NextRequest) {
+export async function POST(req) {
   const { url } = await req.json();
 
   if (!url) {
@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
   }
 
   console.log('chromium.path', chromium.path);
+  console.log('chromium', chromium);
 
   try {
     const browser = await pw.launch({
@@ -23,9 +24,9 @@ export async function POST(req: NextRequest) {
 
     const elements = await page.$("section > div > article");
 
-    const questions = await page.evaluate((el: any) => {
+    const questions = await page.evaluate((el) => {
       const elc = el.children;
-      let res: any[] = [];
+      let res = [];
       let index = -1;
 
       for (const i of elc) {
@@ -75,7 +76,7 @@ export async function POST(req: NextRequest) {
       return res;
     }, elements);
 
-    const finalQuestions = questions.filter((q: any) => q.options.length > 1);
+    const finalQuestions = questions.filter((q) => q.options.length > 1);
 
     return NextResponse.json({
       message: "Scraping completed successfully",

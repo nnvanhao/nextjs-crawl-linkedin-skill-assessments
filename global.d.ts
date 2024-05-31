@@ -1,1 +1,1 @@
-declare module "chromium";
+declare module "*";
