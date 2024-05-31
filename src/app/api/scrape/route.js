@@ -76,6 +76,10 @@ export async function POST(req) {
       return res;
     }, elements);
 
+    await elements.dispose();
+    await page.close();
+    await browser.close();
+
     const finalQuestions = questions.filter((q) => q.options.length > 1);
 
     return NextResponse.json({

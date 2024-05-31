@@ -25,7 +25,7 @@ const ScrapePage = () => {
         "(\\#[-a-z\\d_]*)?$", // fragment locator
       "i"
     );
-    return urlPattern.test(url) && url.endsWith(".md");
+    return urlPattern.test(url.trim()) && url.trim().endsWith(".md");
   };
 
   const handleScrape = async () => {
@@ -55,6 +55,8 @@ const ScrapePage = () => {
         body: JSON.stringify({ url }),
         signal: controller.signal,
       });
+      clearTimeout(timeoutId);
+
       const result = await response.json();
       if (response.ok) {
         const fileName = getFileNameFromUrl(url);
