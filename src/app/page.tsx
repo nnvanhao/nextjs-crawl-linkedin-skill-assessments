@@ -42,6 +42,10 @@ const ScrapePage = () => {
     setLoading(true);
     setError(null);
     setSuccess(null);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 600000);
+
     try {
       const response = await fetch("/api/scrape", {
         method: "POST",
@@ -49,6 +53,7 @@ const ScrapePage = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ url }),
+        signal: controller.signal,
       });
       const result = await response.json();
       if (response.ok) {
