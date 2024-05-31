@@ -10,6 +10,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "URL is required" }, { status: 400 });
   }
 
+  console.log('chromium.path', chromium.path);
+
   try {
     const browser = await pw.launch({
       executablePath: chromium.path,
