@@ -1,7 +1,8 @@
 // app/api/scrape/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import puppeteer from "puppeteer";
 import dotenv from "dotenv";
+import chromium from "chrome-aws-lambda";
+import puppeteer from "puppeteer-core";
 
 dotenv.config();
 
@@ -13,7 +14,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      args: [],
+      executablePath:
+        process.platform === "win32"
+          ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+          : process.platform === "linux"
+          ? "/usr/bin/google-chrome"
+          : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      headless: true,
+    });
     const page = await browser.newPage();
     await page.goto(url);
 
